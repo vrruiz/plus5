@@ -3,6 +3,7 @@ import builtins
 import pygame
 import time
 
+# Private variables
 _clock = None           # pygame clock
 _screen = None          # pygame screen
 _stroke = (255,255,255) # Default stroke
@@ -10,6 +11,7 @@ _fill = (255,255,255)   # Default fill
 _no_fill = True         # No fill status
 _no_stroke = True       # No stroke status
 
+# Variables
 builtins.width = 100    # Window size
 builtins.height = 100   # Window size
 builtins.mouseX = 0     # Mouse position
@@ -20,6 +22,13 @@ builtins.mouseIsPressed = False # Mouse status
 builtins.keyIsPressed = False   # Key status
 builtins.key = ''             # Key used
 builtins.keyCode = 0          # Key code
+
+# Constants
+builtins.PI = 3.14159265358979323846
+builtins.TWO_PI = 6.28318530717958647693
+builtins.HALF_PI =1.57079632679489661923
+builtins.TAU = 6.28318530717958647693
+builtins.HALF_PI = 0.7853982
 
 def size(w,h):
     """ Set window size """
@@ -85,6 +94,12 @@ def noFill():
     global _no_fill
     _no_fill = True
 
+def point(x, y):
+    """ Point """
+    global _screen, _stroke, _no_stroke
+    if _no_stroke == False:
+        pygame.draw.line(_screen, _stroke, [x, y], [x, y])
+
 def line(x1, y1, x2, y2):
     """ Draw line """
     global _screen, _stroke, _no_stroke
@@ -96,6 +111,59 @@ def rect(*args):
     global _screen, _stroke, _no_stroke, _fill, _no_fill
     if len(args) == 4:
         pygame.draw.rect(_screen, _fill, list(args[:4]))
+
+def square(a, b, extent):
+    """ Square """
+    global _screen, _stroke, _no_stroke, _fill, _no_fill
+    square = [a, b, a + extent, b + extent]
+    if _no_fill == False:
+        pygame.draw.rect(_screen, _fill, square, width=0)
+    if _no_stroke == False:
+        pygame.draw.rect(_screen, _stroke, square, width=1)
+
+def arc(*args):
+    """ Arch """
+    global _screen, _stroke, _no_stroke, _fill, _no_fill
+    if len(args) == 6:
+        a,b,c,d,start,stop = args[:6]
+        if _no_fill == False:
+            pygame.draw.arc(_screen, _fill, [a,b,c,d], start, stop, 0)
+        if _no_stroke == False:
+            pygame.draw.arc(_screen, _stroke, [a,b,c,d], start, stop, width=1)
+
+def circle(a,b,extent):
+    """ Circle """
+    global _screen, _stroke, _no_stroke, _fill, _no_fill
+    if _no_fill == False:
+        pygame.draw.circle(_screen, _fill, [a,b], extent, width=0)
+    if _no_stroke == False:
+        pygame.draw.circle(_screen, _stroke, [a,b], extent, width=1)
+
+def ellipse(a, b, c, d):
+    """ Ellipse """
+    global _screen, _stroke, _no_stroke, _fill, _no_fill
+    if _no_fill == False:
+        pygame.draw.ellipse(_screen, _fill, [a,b,c,d], width=0)
+    if _no_stroke == False:
+        pygame.draw.ellipse(_screen, _stroke, [a,b,c,d], width=1)
+
+def triangle(x1, y1, x2, y2, x3, y3):
+    """ Triangle """
+    global _screen, _stroke, _no_stroke, _fill, _no_fill
+    points = [[x1,y1],[x2,y2],[x3,y3]]
+    if _no_fill == False:
+        pygame.draw.polygon(_screen, _fill, points, width=0)
+    if _no_stroke == False:
+        pygame.draw.polygon(_screen, _stroke, points, width=1)
+
+def quad(x1, y1, x2, y2, x3, y3, x4, y4):
+    """ Quad """
+    global _screen, _stroke, _no_stroke, _fill, _no_fill
+    points = [[x1,y1],[x2,y2],[x3,y3],[x4,y4]]
+    if _no_fill == False:
+        pygame.draw.polygon(_screen, _fill, points, width=0)
+    if _no_stroke == False:
+        pygame.draw.polygon(_screen, _stroke, points, width=1)
 
 def run():
     """ Main loop """
