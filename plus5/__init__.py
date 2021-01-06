@@ -16,7 +16,10 @@ builtins.mouseX = 0     # Mouse position
 builtins.mouseY = 0     # Mouse position
 builtins.pmouseY = 0    # Previous mouse position
 builtins.pmouseY = 0    # Previous mouse position
-builtins.mousePressed = False # Mouse status
+builtins.mouseIsPressed = False # Mouse status
+builtins.keyIsPressed = False   # Key status
+builtins.key = ''             # Key used
+builtins.keyCode = 0          # Key code
 
 def size(w,h):
     """ Set window size """
@@ -31,6 +34,14 @@ def setup():
 
 def draw():
     """ Draw """
+    pass
+
+def keyPressed():
+    """ keyPressed """
+    pass
+
+def keyReleased():
+    """ keyReleased """
     pass
 
 def _get_color(args):
@@ -104,6 +115,12 @@ def run():
     draw_func = draw
     if hasattr(__main__, 'draw'):
         draw_func = __main__.draw
+    keyPressed_func = keyPressed
+    if hasattr(__main__, 'keyPressed'):
+        keyPressed_func = __main__.keyPressed
+    keyReleased_func = keyReleased
+    if hasattr(__main__, 'keyReleased'):
+        keyReleased_func = __main__.keyReleased
 
     # Call setup
     setup_func()
@@ -118,10 +135,24 @@ def run():
             if event.type == pygame.QUIT:
                 # Quit
                 running = False
+            if event.type == pygame.KEYDOWN:
+                # Key pressed
+                builtins.keyIsPressed = True
+                builtins.key = event.key  # Numeric code
+                builtins.keyCode = pygame.key.name(event.key)  # String code
+                if len(builtins.keyCode) > 1:
+                    builtins.keyCode = builtins.keyCode.upper()
+                # Call keyPressed() function
+                keyPressed_func()
+            if event.type == pygame.KEYUP:
+                # Key released
+                builtins.keyIsPressed = False
+                # Call keyRelease() function
+                keyReleased_func()
         # Update mouse positions and status
+        builtins.mouseIsPressed = pygame.mouse.get_pressed()
         builtins.mouseX, builtins.mouseY = pygame.mouse.get_pos()
         builtins.pmouseX, builtins.pmouseY = pygame.mouse.get_pos()
-        builtins.mousePressed = pygame.mouse.get_pressed()
         # Call draw() function
         draw_func()
         # Update screen

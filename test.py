@@ -5,6 +5,12 @@ def setup():
     stroke(255)
     fill(127)
 
+def keyPressed():
+    print('keyPressed', keyCode)
+
+def keyReleased():
+    print('keyReleased')
+
 def draw():
     background(127,0,0)
     line(0,0,width,height)
