@@ -154,22 +154,22 @@ def line(x1, y1, x2, y2):
     """ Draw line """
     global _screen, _stroke, _no_stroke
     if _no_stroke == False:
-        pygame.draw.line(_screen, _stroke, [x1, y1], [x2, y2], width=_stroke_weight)
+        pygame.draw.line(_screen, _stroke, [x1, y1], [x2, y2], _stroke_weight)
 
 def rect(*args):
     """ Rectangle """
     global _screen, _stroke, _no_stroke, _fill, _no_fill
     if len(args) == 4:
-        pygame.draw.rect(_screen, _fill, list(args[:4]), width=_stroke_weight)
+        pygame.draw.rect(_screen, _fill, list(args[:4]), _stroke_weight)
 
 def square(a, b, extent):
     """ Square """
     global _screen, _stroke, _no_stroke, _fill, _no_fill
     square = [a, b, a + extent, b + extent]
     if _no_fill == False:
-        pygame.draw.rect(_screen, _fill, square, width=0)
+        pygame.draw.rect(_screen, _fill, square, 0)
     if _no_stroke == False:
-        pygame.draw.rect(_screen, _stroke, square, width=_stroke_weight)
+        pygame.draw.rect(_screen, _stroke, square, _stroke_weight)
 
 def arc(*args):
     """ Arch """
@@ -179,41 +179,41 @@ def arc(*args):
         if _no_fill == False:
             pygame.draw.arc(_screen, _fill, [a,b,c,d], start, stop, 0)
         if _no_stroke == False:
-            pygame.draw.arc(_screen, _stroke, [a,b,c,d], start, stop, width=_stroke_weight)
+            pygame.draw.arc(_screen, _stroke, [a,b,c,d], start, stop, _stroke_weight)
 
 def circle(a,b,extent):
     """ Circle """
     global _screen, _stroke, _no_stroke, _fill, _no_fill
     if _no_fill == False:
-        pygame.draw.circle(_screen, _fill, [a,b], extent, width=0)
+        pygame.draw.circle(_screen, _fill, [a,b], extent, 0)
     if _no_stroke == False:
-        pygame.draw.circle(_screen, _stroke, [a,b], extent, width=_stroke_weight)
+        pygame.draw.circle(_screen, _stroke, [a,b], extent, _stroke_weight)
 
 def ellipse(a, b, c, d):
     """ Ellipse """
     global _screen, _stroke, _no_stroke, _fill, _no_fill
     if _no_fill == False:
-        pygame.draw.ellipse(_screen, _fill, [a,b,c,d], width=0)
+        pygame.draw.ellipse(_screen, _fill, [a,b,c,d], 0)
     if _no_stroke == False:
-        pygame.draw.ellipse(_screen, _stroke, [a,b,c,d], width=_stroke_weight)
+        pygame.draw.ellipse(_screen, _stroke, [a,b,c,d], _stroke_weight)
 
 def triangle(x1, y1, x2, y2, x3, y3):
     """ Triangle """
     global _screen, _stroke, _no_stroke, _fill, _no_fill
     points = [[x1,y1],[x2,y2],[x3,y3]]
     if _no_fill == False:
-        pygame.draw.polygon(_screen, _fill, points, width=0)
+        pygame.draw.polygon(_screen, _fill, points, 0)
     if _no_stroke == False:
-        pygame.draw.polygon(_screen, _stroke, points, width=_stroke_weight)
+        pygame.draw.polygon(_screen, _stroke, points, _stroke_weight)
 
 def quad(x1, y1, x2, y2, x3, y3, x4, y4):
     """ Quad """
     global _screen, _stroke, _no_stroke, _fill, _no_fill
     points = [[x1,y1],[x2,y2],[x3,y3],[x4,y4]]
     if _no_fill == False:
-        pygame.draw.polygon(_screen, _fill, points, width=0)
+        pygame.draw.polygon(_screen, _fill, points, 0)
     if _no_stroke == False:
-        pygame.draw.polygon(_screen, _stroke, points, width=_stroke_weight)
+        pygame.draw.polygon(_screen, _stroke, points, _stroke_weight)
 
 def text(string, x, y):
     """ Text """
