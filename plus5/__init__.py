@@ -6,6 +6,8 @@ import time
 # Private variables
 _clock = None             # pygame clock
 _screen = None            # pygame screen
+_font = 'Arial'           # pygame font
+_font_size = 20           # Font size
 _no_loop = False          # Execute draw
 _stroke = (255,255,255)   # Default stroke
 _stroke_weight = 1        # Stroke weight
@@ -18,6 +20,8 @@ _keyPressed_func = None   # keyPressed function
 _keyReleased_func = None  # keyReleased function
 
 # Variables
+builtins.displayWidth = 0       # Display size
+builtins.displayHeight = 0      # Display size
 builtins.width = 100            # Window size
 builtins.height = 100           # Window size
 builtins.frameCount = 0         # Frame count
@@ -114,16 +118,19 @@ def stroke(*args):
     _no_stroke = False
 
 def noStroke():
+    """ noStroke """
     global _no_stroke
     _no_stroke = True
 
 def fill(*args):
+    """ Fill """
     global _fill, _no_fill
     rgb = _get_color(args)
     _fill = rgb
     _no_fill = False
 
 def noFill():
+    """ noFill """
     global _no_fill
     _no_fill = True
 
@@ -198,13 +205,26 @@ def quad(x1, y1, x2, y2, x3, y3, x4, y4):
     if _no_stroke == False:
         pygame.draw.polygon(_screen, _stroke, points, width=_stroke_weight)
 
+def text(string, x, y):
+    """ Text """
+    global _screen, _font
+    text_render = _font.render(string, True, _stroke)
+    _screen.blit(text_render, [x,y])
+
+def textSize(size):
+    """ textSize """
+    global _font, _font_size
+    _font_size = size
+    _font = pygame.font.SysFont(_font, _font_size)
+    _font = pygame.font.SysFont('Arial', _font_size)
+
 def delay(ms):
     """ Delay """
     time.sleep(ms/1000.0)
 
 def run():
     """ Main loop """
-    global _clock, _screen, _no_loop
+    global _clock, _screen, _no_loop, _font_size
     global _setup_func, _draw_func, _keyPressed_func, _keyReleased_func
 
     # Initialization
@@ -212,6 +232,12 @@ def run():
     pygame.display.set_caption('plus5')
     _screen = pygame.display.set_mode([100,100])
     _clock = pygame.time.Clock()
+
+    display_info = pygame.display.Info()
+    builtins.displayWidth = display_info.current_w
+    builtins.displayHeight = display_info.current_h
+
+    textSize(_font_size)
 
     # Get handlers
     _setup_func = setup
@@ -277,7 +303,7 @@ def run():
             builtins.frameCount = builtins.frameCount + 1
             _draw_func()
         # Update screen
-        pygame.display.flip()
+        pygame.display.update()
 
     # Exit
     pygame.quit()

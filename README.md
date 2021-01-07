@@ -7,6 +7,7 @@ This is a proof of concept. Based on ideas of [p5](https://pypi.org/project/p5/)
 ## Requirements
 
 - PyGame 2
+- libsdl2-ttf
 
 ## Usage
 
