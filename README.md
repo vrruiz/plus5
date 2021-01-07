@@ -19,6 +19,7 @@ plus5, Python3, PyGame and SDL are supported in *multiple operating systems* (Li
 ### Using pip
 
 ```bash
+$ pip install -r requirements.txt
 $ pip install plus5
 ```
 

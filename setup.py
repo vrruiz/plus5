@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="plus5",
-    version="0.1.0",
+    version="0.1.1",
     author="Víctor R. Ruiz",
     author_email="rvr@linotipo.es",
     description="Python port of a subset of the Processing API",
