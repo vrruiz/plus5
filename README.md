@@ -2,7 +2,7 @@
 
 Python3 port of a subset of the Processing API.
 
-This is a proof of concept. Inspired by [p5](https://pypi.org/project/p5/), plus5 uses [PyGame](https://www.pygame.org/news) library to implement a subset of the [Processing API](https://py.processing.org/).
+Inspired by [p5](https://pypi.org/project/p5/), plus5 uses [PyGame](https://www.pygame.org/news) library to implement a subset of the [Processing API](https://py.processing.org/). It's in an early stage but works very fast, thanks to PyGame.
 
 ## Requirements
 
@@ -12,7 +12,7 @@ The current requirements are Python3 and PyGame. PyGame uses [Simple Directmedia
 - PyGame
 - libsdl2-ttf
 
-plus5, Python3, PyGame and SDL are supported in multiple architectures (Linux, Windows, Mac).
+plus5, Python3, PyGame and SDL are supported in *multiple operating systems* (Linux, Windows, Mac).
 
 ## Installation
 
