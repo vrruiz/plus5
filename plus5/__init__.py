@@ -4,24 +4,32 @@ import pygame
 import time
 
 # Private variables
-_clock = None           # pygame clock
-_screen = None          # pygame screen
-_stroke = (255,255,255) # Default stroke
-_fill = (255,255,255)   # Default fill
-_no_fill = True         # No fill status
-_no_stroke = True       # No stroke status
+_clock = None             # pygame clock
+_screen = None            # pygame screen
+_no_loop = False          # Execute draw
+_stroke = (255,255,255)   # Default stroke
+_stroke_weight = 1        # Stroke weight
+_fill = (255,255,255)     # Default fill
+_no_fill = True           # No fill status
+_no_stroke = True         # No stroke status
+_setup_func = None        # setup function
+_draw_func = None         # draw function
+_keyPressed_func = None   # keyPressed function
+_keyReleased_func = None  # keyReleased function
 
 # Variables
-builtins.width = 100    # Window size
-builtins.height = 100   # Window size
-builtins.mouseX = 0     # Mouse position
-builtins.mouseY = 0     # Mouse position
-builtins.pmouseY = 0    # Previous mouse position
-builtins.pmouseY = 0    # Previous mouse position
+builtins.width = 100            # Window size
+builtins.height = 100           # Window size
+builtins.frameCount = 0         # Frame count
+builtins.frameRate = 30         # Frame count
+builtins.mouseX = 0             # Mouse position
+builtins.mouseY = 0             # Mouse position
+builtins.pmouseY = 0            # Previous mouse position
+builtins.pmouseY = 0            # Previous mouse position
 builtins.mouseIsPressed = False # Mouse status
 builtins.keyIsPressed = False   # Key status
-builtins.key = ''             # Key used
-builtins.keyCode = 0          # Key code
+builtins.key = ''               # Key used
+builtins.keyCode = 0            # Key code
 
 # Constants
 builtins.PI = 3.14159265358979323846
@@ -45,12 +53,37 @@ def draw():
     """ Draw """
     pass
 
+def redraw():
+    """ Redraw """
+    global _draw_func
+    if _draw_func:
+        builtins.frameCount = builtins.frameCount + 1
+        _draw_func()
+
+def noLoop():
+    """ noLoop """
+    global _no_loop
+    _no_loop = True
+
+def strokeWeight(weight):
+    """ strokeWeight() """
+    global _stroke_weight
+    _stroke_weight = weight
+
 def keyPressed():
     """ keyPressed """
     pass
 
 def keyReleased():
     """ keyReleased """
+    pass
+
+def mousePressed():
+    """ mousePressed """
+    pass
+
+def mouseReleased():
+    """ mouseReleased """
     pass
 
 def _get_color(args):
@@ -104,13 +137,13 @@ def line(x1, y1, x2, y2):
     """ Draw line """
     global _screen, _stroke, _no_stroke
     if _no_stroke == False:
-        pygame.draw.line(_screen, _stroke, [x1, y1], [x2, y2])
+        pygame.draw.line(_screen, _stroke, [x1, y1], [x2, y2], width=_stroke_weight)
 
 def rect(*args):
     """ Rectangle """
     global _screen, _stroke, _no_stroke, _fill, _no_fill
     if len(args) == 4:
-        pygame.draw.rect(_screen, _fill, list(args[:4]))
+        pygame.draw.rect(_screen, _fill, list(args[:4]), width=_stroke_weight)
 
 def square(a, b, extent):
     """ Square """
@@ -119,7 +152,7 @@ def square(a, b, extent):
     if _no_fill == False:
         pygame.draw.rect(_screen, _fill, square, width=0)
     if _no_stroke == False:
-        pygame.draw.rect(_screen, _stroke, square, width=1)
+        pygame.draw.rect(_screen, _stroke, square, width=_stroke_weight)
 
 def arc(*args):
     """ Arch """
@@ -129,7 +162,7 @@ def arc(*args):
         if _no_fill == False:
             pygame.draw.arc(_screen, _fill, [a,b,c,d], start, stop, 0)
         if _no_stroke == False:
-            pygame.draw.arc(_screen, _stroke, [a,b,c,d], start, stop, width=1)
+            pygame.draw.arc(_screen, _stroke, [a,b,c,d], start, stop, width=_stroke_weight)
 
 def circle(a,b,extent):
     """ Circle """
@@ -137,7 +170,7 @@ def circle(a,b,extent):
     if _no_fill == False:
         pygame.draw.circle(_screen, _fill, [a,b], extent, width=0)
     if _no_stroke == False:
-        pygame.draw.circle(_screen, _stroke, [a,b], extent, width=1)
+        pygame.draw.circle(_screen, _stroke, [a,b], extent, width=_stroke_weight)
 
 def ellipse(a, b, c, d):
     """ Ellipse """
@@ -145,7 +178,7 @@ def ellipse(a, b, c, d):
     if _no_fill == False:
         pygame.draw.ellipse(_screen, _fill, [a,b,c,d], width=0)
     if _no_stroke == False:
-        pygame.draw.ellipse(_screen, _stroke, [a,b,c,d], width=1)
+        pygame.draw.ellipse(_screen, _stroke, [a,b,c,d], width=_stroke_weight)
 
 def triangle(x1, y1, x2, y2, x3, y3):
     """ Triangle """
@@ -154,7 +187,7 @@ def triangle(x1, y1, x2, y2, x3, y3):
     if _no_fill == False:
         pygame.draw.polygon(_screen, _fill, points, width=0)
     if _no_stroke == False:
-        pygame.draw.polygon(_screen, _stroke, points, width=1)
+        pygame.draw.polygon(_screen, _stroke, points, width=_stroke_weight)
 
 def quad(x1, y1, x2, y2, x3, y3, x4, y4):
     """ Quad """
@@ -163,41 +196,53 @@ def quad(x1, y1, x2, y2, x3, y3, x4, y4):
     if _no_fill == False:
         pygame.draw.polygon(_screen, _fill, points, width=0)
     if _no_stroke == False:
-        pygame.draw.polygon(_screen, _stroke, points, width=1)
+        pygame.draw.polygon(_screen, _stroke, points, width=_stroke_weight)
+
+def delay(ms):
+    """ Delay """
+    time.sleep(ms/1000.0)
 
 def run():
     """ Main loop """
-    global _clock, _screen
+    global _clock, _screen, _no_loop
+    global _setup_func, _draw_func, _keyPressed_func, _keyReleased_func
 
     # Initialization
     pygame.init()
     pygame.display.set_caption('plus5')
     _screen = pygame.display.set_mode([100,100])
     _clock = pygame.time.Clock()
-    frames_per_second = 25
 
     # Get handlers
-    setup_func = setup
+    _setup_func = setup
     if hasattr(__main__, 'setup'):
-        setup_func = __main__.setup
-    draw_func = draw
+        _setup_func = __main__.setup
+    _draw_func = draw
     if hasattr(__main__, 'draw'):
-        draw_func = __main__.draw
-    keyPressed_func = keyPressed
+        _draw_func = __main__.draw
+    _keyPressed_func = keyPressed
     if hasattr(__main__, 'keyPressed'):
-        keyPressed_func = __main__.keyPressed
-    keyReleased_func = keyReleased
+        _keyPressed_func = __main__.keyPressed
+    _keyReleased_func = keyReleased
     if hasattr(__main__, 'keyReleased'):
-        keyReleased_func = __main__.keyReleased
+        _keyReleased_func = __main__.keyReleased
+    if hasattr(__main__, 'mousePressed'):
+        _mousePressed_func = __main__.mousePressed
+    _mouseReleased_func = mouseReleased
+    if hasattr(__main__, 'mouseReleased'):
+        _mouseReleased_func = __main__.mouseReleased
 
     # Call setup
-    setup_func()
+    _setup_func()
 
     # Main loop (draw)
     running = True
     while running:
         # Wait
-        _clock.tick(frames_per_second)
+        _clock.tick(builtins.frameRate)
+        # Update mouse positions and status
+        builtins.mouseX, builtins.mouseY = pygame.mouse.get_pos()
+        builtins.pmouseX, builtins.pmouseY = pygame.mouse.get_pos()
         # Process events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -211,20 +256,28 @@ def run():
                 if len(builtins.keyCode) > 1:
                     builtins.keyCode = builtins.keyCode.upper()
                 # Call keyPressed() function
-                keyPressed_func()
+                _keyPressed_func()
             if event.type == pygame.KEYUP:
                 # Key released
                 builtins.keyIsPressed = False
                 # Call keyRelease() function
-                keyReleased_func()
-        # Update mouse positions and status
-        builtins.mouseIsPressed = pygame.mouse.get_pressed()
-        builtins.mouseX, builtins.mouseY = pygame.mouse.get_pos()
-        builtins.pmouseX, builtins.pmouseY = pygame.mouse.get_pos()
+                _keyReleased_func()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # Mouse pressed
+                builtins.mouseIsPressed = True
+                # Call keyRelease() function
+                _mousePressed_func()
+            if event.type == pygame.MOUSEBUTTONUP:
+                # Mouse pressed
+                builtins.mouseIsPressed = False
+                # Call mouseReleased() function
+                _mouseReleased_func()
         # Call draw() function
-        draw_func()
+        if _no_loop == False:
+            builtins.frameCount = builtins.frameCount + 1
+            _draw_func()
         # Update screen
-        pygame.display.update()
+        pygame.display.flip()
 
     # Exit
     pygame.quit()
