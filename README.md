@@ -11,6 +11,14 @@ This is a proof of concept. Based on ideas of [p5](https://pypi.org/project/p5/)
 
 ## Installation
 
+### Using pip
+
+```bash
+$ pip install plus5
+```
+
+### Using git
+
 ```bash
 $ git clone https://github.com/vrruiz/plus5/
 $ cd plus5/
