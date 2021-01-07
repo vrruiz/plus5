@@ -2,6 +2,9 @@ from plus5 import *
 
 def setup():
     size(500,500)
+    font = loadFont('dejavusans')
+    print(font)
+    textFont(font, 50)
 
 def keyPressed():
     print('keyPressed', keyCode)

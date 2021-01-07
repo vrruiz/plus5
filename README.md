@@ -9,6 +9,14 @@ This is a proof of concept. Based on ideas of [p5](https://pypi.org/project/p5/)
 - PyGame 2
 - libsdl2-ttf
 
+## Installation
+
+```bash
+$ git clone https://github.com/vrruiz/plus5/
+$ cd plus5/
+$ python3 setup.py install
+```
+
 ## Usage
 
 Working example.
