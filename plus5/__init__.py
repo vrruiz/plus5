@@ -6,8 +6,10 @@ import time
 # Private variables
 _clock = None             # pygame clock
 _screen = None            # pygame screen
-_font = 'Arial'           # pygame font
+_font = None              # pygame font
+_font_name = None         # Font name
 _font_size = 20           # Font size
+_font_cache = []          # pygame fonts
 _no_loop = False          # Execute draw
 _stroke = (255,255,255)   # Default stroke
 _stroke_weight = 1        # Stroke weight
@@ -41,6 +43,14 @@ builtins.TWO_PI = 6.28318530717958647693
 builtins.HALF_PI =1.57079632679489661923
 builtins.TAU = 6.28318530717958647693
 builtins.HALF_PI = 0.7853982
+
+
+class PFont():
+    """ Class PFont """
+
+    def __init__(self, font):
+        """ Store font """
+        self.font = font
 
 def size(w,h):
     """ Set window size """
@@ -213,10 +223,32 @@ def text(string, x, y):
 
 def textSize(size):
     """ textSize """
-    global _font, _font_size
+    global _font, _font_name, _font_size
     _font_size = size
-    _font = pygame.font.SysFont(_font, _font_size)
-    _font = pygame.font.SysFont('Arial', _font_size)
+    _font = pygame.font.SysFont(_font_name, _font_size)
+
+def textFont(font, size=None):
+    """ textFont """
+    global _font
+    if type(font) == str and size is not None:
+        font = createFont(font, size)
+    if type(font) == PFont:
+        _font = font.font
+
+def loadFont(font_name):
+    """ loadFont """
+    fonts = pygame.font.get_fonts()
+    print(fonts)
+    if font_name.lower() in fonts:
+        return font_name
+    else:
+        return None
+
+def createFont(name, size):
+    """ createFont """
+    font = pygame.font.SysFont(name, size)
+    pfont = PFont(font)
+    return pfont
 
 def delay(ms):
     """ Delay """
