@@ -101,30 +101,30 @@ def mouseReleased():
     pass
 
 def _get_color(args):
-    r,g,b = (0,0,0)
+    r, g, b, a = (0, 0, 0, 255)
     if len(args) == 1:
         r = args[0]
         g = args[0]
         b = args[0]
     elif len(args) == 3:
-        r = args[0]
-        g = args[1]
-        b = args[2]
+        r, g, b = args[:3]
+    elif len(args) == 4:
+        r, g, b, a = args[:4]
     else:
         raise "Incorrect number of parameters"
-    return (r,g,b)
+    return (r, g, b, a)
 
 def background(*args):
     """ Background """
     global _screen
-    r, g, b = _get_color(args)
-    _screen.fill((r,g,b))
+    r, g, b, a = _get_color(args)
+    _screen.fill((r, g, b, a))
 
 def stroke(*args):
     """ Set color for stroke """
     global _stroke, _no_stroke
-    rgb = _get_color(args)
-    _stroke = rgb
+    rgba = _get_color(args)
+    _stroke = rgba
     _no_stroke = False
 
 def noStroke():
@@ -135,8 +135,8 @@ def noStroke():
 def fill(*args):
     """ Fill """
     global _fill, _no_fill
-    rgb = _get_color(args)
-    _fill = rgb
+    rgba = _get_color(args)
+    _fill = rgba
     _no_fill = False
 
 def noFill():
@@ -217,10 +217,14 @@ def quad(x1, y1, x2, y2, x3, y3, x4, y4):
 
 def text(string, x, y):
     """ Text """
-    global _screen, _font
+    global _screen, _font, _stroke
+    alpha = 255
+    if len(_stroke) == 4:
+        alpha = _stroke[3]
     text_render = _font.render(string, True, _stroke)
+    text_render.set_alpha(alpha)
     _screen.blit(text_render, [x,y])
-
+ 
 def textSize(size):
     """ textSize """
     global _font, _font_name, _font_size
@@ -240,7 +244,6 @@ def textFont(font, size=None):
 def loadFont(font_name):
     """ loadFont """
     fonts = pygame.font.get_fonts()
-    print(fonts)
     if font_name.lower() in fonts:
         return font_name
     else:
