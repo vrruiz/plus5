@@ -1,18 +1,18 @@
-# plus5
+# Plus5
 
 Python3 port of a subset of the Processing API.
 
-Inspired by [p5](https://pypi.org/project/p5/), plus5 uses [PyGame](https://www.pygame.org/news) library to implement a subset of the [Processing API](https://py.processing.org/). It's in an early stage but works very fast, thanks to PyGame.
+Inspired by [p5](https://pypi.org/project/p5/), Plus5 uses [PyGame](https://www.pygame.org/news) library to implement a subset of the [Processing API](https://py.processing.org/). It's in an early stage but works very fast, thanks to PyGame.
 
 ## Requirements
 
 The current requirements are Python3 and PyGame. PyGame uses [Simple Directmedia Layer (SDL)](https://www.libsdl.org/). In order to use fonts, sdl2-ttf must be also installed in the systems.
 
 - Python3
-- PyGame
+- PyGame >= 1.9.
 - libsdl2-ttf
 
-plus5, Python3, PyGame and SDL are supported in *multiple operating systems* (Linux, Windows, Mac).
+Plus5, Python3, PyGame and SDL are supported in *multiple operating systems* (Linux, Windows, Mac).
 
 ## Installation
 
@@ -62,6 +62,7 @@ Usually, the calls are the same as in [Processing.py Reference](https://py.proce
 
 ```python
 draw()
+exit()
 noLoop()
 setup()
 size(width, height)
@@ -138,6 +139,31 @@ textSize(size)
 textFont(font, size)
 loadFont(name)
 createFont(name, size)
+```
+
+### Image
+
+```python
+loadImage(filename)
+image(img, x, y)
+```
+
+### Math
+```python
+acos(value)
+asin(value)
+atan(value)
+atan2(y, x)
+ceil(n)
+cos(radians)
+degrees(radians)
+exp(n)
+floor(n)
+log(n)
+radians(degrees)
+sin(radians)
+sqrt(n)
+tan(radians)
 ```
 
 ### Constants

@@ -1,7 +1,11 @@
 import __main__
 import builtins
+import os
 import pygame
 import time
+
+from math import ceil, exp, floor, log, sqrt
+from math import acos, asin, atan, atan2, cos, degrees, radians, sin, tan
 
 # Private variables
 _clock = None             # pygame clock
@@ -52,6 +56,21 @@ class PFont():
         """ Store font """
         self.font = font
 
+
+class PImage():
+    """ Class PImage """
+
+    def __init__(self):
+        """ Initalization """
+        self.image = None
+        self.width = 0
+        self.height = 0
+
+    def load_image(self, filename):
+        """ Load image """
+        self.image = pygame.image.load(filename)
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
 
 def size(w,h):
     """ Set window size """
@@ -267,6 +286,17 @@ def save(filename):
         pygame.image.save(_screen, filename)
     else:
         raise "Only PNG image format supported"
+
+def loadImage(filename):
+    """ loadImage """
+    img = PImage()
+    img.load_image(filename)
+    return img
+
+def image(img, x, y):
+    """ image """
+    global _screen
+    _screen.blit(img.image, [x, y])
 
 def run():
     """ Main loop """
