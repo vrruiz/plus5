@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="plus5",
-    version="0.1.1",
+    version="0.1.2",
     author="Víctor R. Ruiz",
     author_email="rvr@linotipo.es",
     description="Python port of a subset of the Processing API",
@@ -13,6 +13,9 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/vrruiz/plus5",
     packages=setuptools.find_packages(),
+    install_requires = [
+        'pygame',
+    ]
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
