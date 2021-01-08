@@ -110,6 +110,12 @@ pmouseX
 pmouseY
 ```
 
+### Output
+
+```python
+save()
+```
+
 ### Shape
 
 ```python

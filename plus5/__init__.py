@@ -80,11 +80,6 @@ def noLoop():
     global _no_loop
     _no_loop = True
 
-def strokeWeight(weight):
-    """ strokeWeight() """
-    global _stroke_weight
-    _stroke_weight = weight
-
 def keyPressed():
     """ keyPressed """
     pass
@@ -127,6 +122,11 @@ def stroke(*args):
     rgba = color(args)
     _stroke = rgba
     _no_stroke = False
+
+def strokeWeight(weight):
+    """ strokeWeight() """
+    global _stroke_weight
+    _stroke_weight = weight
 
 def noStroke():
     """ noStroke """
@@ -186,9 +186,9 @@ def circle(a,b,extent):
     """ Circle """
     global _screen, _stroke, _no_stroke, _fill, _no_fill
     if _no_fill == False:
-        pygame.draw.circle(_screen, _fill, [a,b], extent / 2, 0)
+        pygame.draw.circle(_screen, _fill, [a,b], int(extent / 2), 0)
     if _no_stroke == False:
-        pygame.draw.circle(_screen, _stroke, [a,b], extent / 2, _stroke_weight)
+        pygame.draw.circle(_screen, _stroke, [a,b], int(extent / 2), _stroke_weight)
 
 def ellipse(a, b, c, d):
     """ Ellipse """
@@ -259,6 +259,14 @@ def createFont(name, size):
 def delay(ms):
     """ Delay """
     time.sleep(ms/1000.0)
+
+def save(filename):
+    """ Save """
+    global _screen
+    if filename.lower().endswith('.png'):
+        pygame.image.save(_screen, filename)
+    else:
+        raise "Only PNG image format supported"
 
 def run():
     """ Main loop """
