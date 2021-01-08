@@ -8,22 +8,24 @@ from math import ceil, exp, floor, log, sqrt
 from math import acos, asin, atan, atan2, cos, degrees, radians, sin, tan
 
 # Private variables
-_clock = None             # pygame clock
-_screen = None            # pygame screen
-_font = None              # pygame font
-_font_name = None         # Font name
-_font_size = 20           # Font size
-_font_cache = []          # pygame fonts
-_no_loop = False          # Execute draw
-_stroke = (255,255,255)   # Default stroke
-_stroke_weight = 1        # Stroke weight
-_fill = (255,255,255)     # Default fill
-_no_fill = True           # No fill status
-_no_stroke = True         # No stroke status
-_setup_func = None        # setup function
-_draw_func = None         # draw function
-_keyPressed_func = None   # keyPressed function
-_keyReleased_func = None  # keyReleased function
+_clock = None               # pygame clock
+_screen = None              # pygame screen
+_font = None                # pygame font
+_font_name = None           # Font name
+_font_size = 20             # Font size
+_font_cache = []            # pygame fonts
+_no_loop = False            # Execute draw
+_stroke = (255,255,255)     # Default stroke
+_stroke_weight = 1          # Stroke weight
+_fill = (255,255,255)       # Default fill
+_no_fill = True             # No fill status
+_no_stroke = True           # No stroke status
+_setup_func = None          # setup function
+_draw_func = None           # draw function
+_keyPressed_func = None     # keyPressed function
+_keyReleased_func = None    # keyReleased function
+_mousePressed_func = None   # keyPressed function
+_mouseReleased_func = None  # keyReleased function
 
 # Variables
 builtins.displayWidth = 0       # Display size
@@ -115,31 +117,27 @@ def mouseReleased():
     """ mouseReleased """
     pass
 
-def color(args):
-    r, g, b, a = (0, 0, 0, 255)
+def color(*args):
+    """ color """
     if len(args) == 1:
-        r = args[0]
-        g = args[0]
-        b = args[0]
+        return args[0], args[0], args[0]
     elif len(args) == 3:
-        r, g, b = args[:3]
+        return args[:3]
     elif len(args) == 4:
-        r, g, b, a = args[:4]
+        return args[:4]
     else:
         raise "Incorrect number of parameters"
-    return (r, g, b, a)
 
 def background(*args):
     """ Background """
     global _screen
-    r, g, b, a = color(args)
-    _screen.fill((r, g, b, a))
+    c = color(*args)
+    _screen.fill(c)
 
 def stroke(*args):
     """ Set color for stroke """
     global _stroke, _no_stroke
-    rgba = color(args)
-    _stroke = rgba
+    _stroke = color(*args)
     _no_stroke = False
 
 def strokeWeight(weight):
@@ -155,8 +153,7 @@ def noStroke():
 def fill(*args):
     """ Fill """
     global _fill, _no_fill
-    rgba = color(args)
-    _fill = rgba
+    _fill = color(*args)
     _no_fill = False
 
 def noFill():
@@ -298,14 +295,15 @@ def image(img, x, y):
     global _screen
     _screen.blit(img.image, [x, y])
 
-def run():
-    """ Main loop """
+def _init():
+    """ Initialization """
     global _clock, _screen, _no_loop, _font_size
     global _setup_func, _draw_func, _keyPressed_func, _keyReleased_func
+    global _mousePressed, _mousedReleased
 
-    # Initialization
+    # PyGame unitialization
     pygame.init()
-    pygame.display.set_caption('plus5')
+    pygame.display.set_caption('Plus5')
     _screen = pygame.display.set_mode([100,100])
     _clock = pygame.time.Clock()
 
@@ -313,6 +311,7 @@ def run():
     builtins.displayWidth = display_info.current_w
     builtins.displayHeight = display_info.current_h
 
+    # Set defaults
     background(200)
     textSize(_font_size)
 
@@ -338,11 +337,15 @@ def run():
     # Call setup
     _setup_func()
 
+    # Update screen
+    pygame.display.update()
+
+
+def _loop():
+    """ Loop (draw) """
     # Main loop (draw)
     running = True
     while running:
-        # Wait
-        _clock.tick(builtins.frameRate)
         # Update mouse positions and status
         builtins.mouseX, builtins.mouseY = pygame.mouse.get_pos()
         builtins.pmouseX, builtins.pmouseY = pygame.mouse.get_pos()
@@ -381,6 +384,21 @@ def run():
             _draw_func()
         # Update screen
         pygame.display.update()
+        # Wait
+        _clock.tick(builtins.frameRate)
+
+def _end():
+    """ Finish """
+    # Exit PyGame
+    pygame.quit()
+
+def run():
+    """ Main loop """
+    # Initialization
+    _init()
+
+    # Main loop
+    _loop()
 
     # Exit
-    pygame.quit()
+    _end()
