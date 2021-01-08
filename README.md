@@ -142,6 +142,10 @@ TAU = 6.28318530717958647693
 HALF_PI = 0.7853982
 ```
 
+## Tutorials
+
+- [Introducción a Plus5: Programación gráfica fácil con Python](https://vrruiz.github.io/plus5-tutorial/)
+
 ## Author
 
 Víctor R. Ruiz <rvr@linotipo.es>
