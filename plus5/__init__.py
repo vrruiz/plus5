@@ -185,9 +185,9 @@ def circle(a,b,extent):
     """ Circle """
     global _screen, _stroke, _no_stroke, _fill, _no_fill
     if _no_fill == False:
-        pygame.draw.circle(_screen, _fill, [a,b], extent, 0)
+        pygame.draw.circle(_screen, _fill, [a,b], extent / 2, 0)
     if _no_stroke == False:
-        pygame.draw.circle(_screen, _stroke, [a,b], extent, _stroke_weight)
+        pygame.draw.circle(_screen, _stroke, [a,b], extent / 2, _stroke_weight)
 
 def ellipse(a, b, c, d):
     """ Ellipse """
@@ -229,9 +229,11 @@ def textSize(size):
 
 def textFont(font, size=None):
     """ textFont """
-    global _font
+    global _font, _font_name, _font_size
     if type(font) == str and size is not None:
         font = createFont(font, size)
+        _font_name = font
+        _font_size = size
     if type(font) == PFont:
         _font = font.font
 
@@ -269,6 +271,7 @@ def run():
     builtins.displayWidth = display_info.current_w
     builtins.displayHeight = display_info.current_h
 
+    background(200)
     textSize(_font_size)
 
     # Get handlers
