@@ -85,6 +85,7 @@ width
 
 ```python
 background(color)
+color(color)
 fill(color)
 noFill()
 noStroke()

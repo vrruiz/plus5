@@ -52,6 +52,7 @@ class PFont():
         """ Store font """
         self.font = font
 
+
 def size(w,h):
     """ Set window size """
     global _screen
@@ -100,7 +101,7 @@ def mouseReleased():
     """ mouseReleased """
     pass
 
-def _get_color(args):
+def color(args):
     r, g, b, a = (0, 0, 0, 255)
     if len(args) == 1:
         r = args[0]
@@ -117,13 +118,13 @@ def _get_color(args):
 def background(*args):
     """ Background """
     global _screen
-    r, g, b, a = _get_color(args)
+    r, g, b, a = color(args)
     _screen.fill((r, g, b, a))
 
 def stroke(*args):
     """ Set color for stroke """
     global _stroke, _no_stroke
-    rgba = _get_color(args)
+    rgba = color(args)
     _stroke = rgba
     _no_stroke = False
 
@@ -135,7 +136,7 @@ def noStroke():
 def fill(*args):
     """ Fill """
     global _fill, _no_fill
-    rgba = _get_color(args)
+    rgba = color(args)
     _fill = rgba
     _no_fill = False
 
