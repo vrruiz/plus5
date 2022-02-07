@@ -299,7 +299,7 @@ def _init():
     """ Initialization """
     global _clock, _screen, _no_loop, _font_size
     global _setup_func, _draw_func, _keyPressed_func, _keyReleased_func
-    global _mousePressed, _mousedReleased
+    global _mousePressed_func, _mouseReleased_func
 
     # PyGame unitialization
     pygame.init()
@@ -328,6 +328,7 @@ def _init():
     _keyReleased_func = keyReleased
     if hasattr(__main__, 'keyReleased'):
         _keyReleased_func = __main__.keyReleased
+    _mousePressed_func = mousePressed
     if hasattr(__main__, 'mousePressed'):
         _mousePressed_func = __main__.mousePressed
     _mouseReleased_func = mouseReleased
@@ -371,7 +372,7 @@ def _loop():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 # Mouse pressed
                 builtins.mouseIsPressed = True
-                # Call keyRelease() function
+                # Call mousePressed() function
                 _mousePressed_func()
             if event.type == pygame.MOUSEBUTTONUP:
                 # Mouse pressed
